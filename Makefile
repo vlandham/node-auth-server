@@ -1,9 +1,9 @@
 
 init:
-	eb init -p python2.7 flask-auth-server
+	eb init --platform node.js --region us-west-2
 
 create:
-	eb create flask-env
+	eb create node-express-env
 
 open:
 	eb open
