@@ -6,11 +6,18 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var proxy = require('express-http-proxy');
+var auth = require('http-auth');
+
+var basic = auth.basic({
+    realm: "Simon Area.",
+    file: __dirname + "/data/users.htpasswd"
+});
 
 var index = require('./routes/index');
 var health = require('./routes/health');
 
 var app = express();
+app.use(auth.connect(basic));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
