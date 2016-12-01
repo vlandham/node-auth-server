@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/health', health);
 
-app.use('/proxy', proxy('proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/'));
+app.use('/proxy', proxy('http://proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
