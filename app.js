@@ -4,12 +4,15 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var http = require('http');
 
-var proxy = require('express-http-proxy');
+// var proxy = require('express-http-proxy');
+var proxy = require('http-proxy-middleware');
+
 var auth = require('http-auth');
 
 var basic = auth.basic({
-    realm: "Simon Area.",
+    realm: "Proquest",
     file: __dirname + "/data/users.htpasswd"
 });
 
@@ -17,7 +20,7 @@ var index = require('./routes/index');
 var health = require('./routes/health');
 
 var app = express();
-app.use(auth.connect(basic));
+// app.use(auth.connect(basic));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -34,7 +37,32 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/health', health);
 
-app.use('/proxy', proxy('http://proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/'));
+// app.use('/proxy', proxy('proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/'));
+// app.use('/main.css', proxy('proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/main.css'));
+// app.use('/bundle.js', proxy('proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/bundle.js'));
+app.get('/bundle.js', function(req, res) {
+  var clientReq = http.request('http://proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/bundle.js');
+  clientReq.pipe(res);
+  clientReq.end();
+
+})
+
+var proxyOptions = {
+  target: 'http://proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/',
+  // changeOrigin: true,
+  ws: true,
+  pathRewrite:{}
+};
+
+var proquestProxy = proxy(proxyOptions);
+
+app.use('/lll', proquestProxy);
+
+
+// app.use('/proxy', proxy('proquest-vector-client.s3-website-us-east-1.amazonaws.com/client/', {
+  // preserveHostHdr: true,
+  // memoizeHost: false,
+// }));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
