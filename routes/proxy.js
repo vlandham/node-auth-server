@@ -3,12 +3,12 @@ const express = require('express');
 const http = require('http');
 const zlib = require('zlib');
 
+const config = require('../config');
+
 const router = express.Router();
-const baseUrl =
-      'http://proquest-vector-client.s3-website-us-east-1.amazonaws.com';
 
 router.get('*', function(req, res, next) {
-  let url = baseUrl + req.url;
+  let url = config.baseUrl + req.url;
   let options = urlParse(url);
 
   options.headers = req.headers;
