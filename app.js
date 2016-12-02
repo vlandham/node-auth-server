@@ -31,8 +31,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Use the proxy server for every request
 app.use('/', proxy);
-app.use('/health', health);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
