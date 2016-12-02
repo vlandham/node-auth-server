@@ -31,6 +31,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use('/health', health);
+
 // Use the proxy server for every request
 app.use('/', proxy);
 
