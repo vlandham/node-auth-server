@@ -15,7 +15,13 @@ var proxy = require('./routes/proxy');
 var health = require('./routes/health');
 
 var app = express();
-app.use(auth.connect(basic));
+app.use(function(req, res, next) {
+    if ('/health' === req.path) {
+        next();
+    } else {
+      (auth.connect(basic))(req, res, next);
+    }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
