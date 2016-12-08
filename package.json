@@ -1,5 +1,5 @@
 {
-  "name": "eb-flask",
+  "name": "node-auth-server",
   "version": "0.0.0",
   "private": true,
   "scripts": {

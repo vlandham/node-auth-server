@@ -1,5 +1,5 @@
 
-# ProQuest Auth Server
+# Node Auth Server
 
 Very simple server that provides basic auth and proxying of connection to S3 hosted site.
 
